@@ -4,3 +4,5 @@
 @media(max-width:420px){.ribbon .wrap{font-size:9px;gap:4px}.ribbon span{font-size:12px}.ribbon span:last-child{display:none}}
 
 .arrow-svg{width:1em;height:1em;vertical-align:middle;flex-shrink:0}.button{gap:12px}.abstract-house .arrow-svg{width:140px;height:140px}.contact-decoration .arrow-svg{width:100px;height:100px}
+
+.avito-link{margin-top:12px}.text-link{text-decoration:underline;text-underline-offset:3px}@media(max-width:420px){.header .brand{font-size:11px;gap:6px}.header .mark{font-size:24px}.hero .eyebrow{letter-spacing:1px}}
