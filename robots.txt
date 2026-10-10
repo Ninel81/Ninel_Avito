@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ninel-khramova-avito.vercel.app/sitemap.xml
