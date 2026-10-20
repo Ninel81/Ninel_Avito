@@ -19,3 +19,9 @@ document.querySelector('#copy').addEventListener('click', async (event) => {
     button.textContent = 'Выделено — нажмите Ctrl+C / ⌘C';
   }
 });
+
+const checklistItems = document.querySelectorAll('.checklist-items input[type="checkbox"]');
+checklistItems.forEach((item) => item.addEventListener('change', () => {
+  const count = [...checklistItems].filter((input) => input.checked).length;
+  document.querySelector('#checklist-status').textContent = `Проверено ${count} из ${checklistItems.length} пунктов. ${count === checklistItems.length ? 'Теперь сравните просмотры и обращения. Если вопросы остались — начните с бесплатного разбора.' : 'Отметьте проверенные пункты; недостающие можно обсудить на разборе.'}`;
+}));
