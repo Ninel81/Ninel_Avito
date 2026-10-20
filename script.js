@@ -1,11 +1,19 @@
 'use strict';
 const form = document.querySelector('#brief');
 const contactInput = document.querySelector('#client-contact');
+const consentInput = document.querySelector('#privacy-consent');
+consentInput.addEventListener('change', () => {
+  if (!consentInput.checked) {
+    document.querySelector('#result').hidden = true;
+    document.querySelector('#message').value = '';
+  }
+});
 contactInput.addEventListener('input', () => {
   contactInput.setCustomValidity(contactInput.value.trim() ? '' : 'Укажите Telegram или номер телефона.');
 });
 form.addEventListener('submit', (event) => {
   event.preventDefault();
+  if (!form.reportValidity()) return;
   const data = new FormData(form);
   const contact = data.get('contact').trim();
   if (!contact) {
@@ -14,7 +22,7 @@ form.addEventListener('submit', (event) => {
     return;
   }
   document.querySelector('#copy').textContent = 'Скопировать текст';
-  document.querySelector('#message').value = `Здравствуйте! Меня зовут ${data.get('name').trim()}.\nМой бизнес: ${data.get('business').trim()}.\nСвязаться со мной: ${contact}\nЗадача: ${data.get('task').trim()}.\nХочу обсудить продвижение на Авито.`;
+  document.querySelector('#message').value = `Здравствуйте! Меня зовут ${data.get('name').trim()}.\nМой бизнес: ${data.get('business').trim()}.\nСвязаться со мной: ${contact}\nЗадача: ${data.get('task').trim()}.\nХочу обсудить продвижение на Авито.\n\nДаю согласие Нинель Храмовой на обработку указанных мной персональных данных для ответа на обращение. Условия: https://ninel-khramova-avito.vercel.app/consent (редакция от 20.10.2026).`;
   document.querySelector('#result').hidden = false;
   document.querySelector('#message').focus();
 });
@@ -80,3 +88,6 @@ window.addEventListener('scroll', scheduleProgress, { passive: true });
 window.addEventListener('resize', scheduleProgress);
 window.addEventListener('load', scheduleProgress);
 updateProgress();
+
+// Enable only after local form handling is installed; no-JS submissions stay disabled.
+document.querySelector("#brief-fields").disabled = false;

@@ -20,7 +20,7 @@ def page(title, description, path, body, schema):
 <link rel="canonical" href="{BASE}{path}"><meta property="og:url" content="{BASE}{path}"><meta property="og:title" content="{e(title, quote=True)}"><meta property="og:description" content="{e(description, quote=True)}"><meta property="og:type" content="{'article' if path != '/blog/' else 'website'}"><meta property="og:locale" content="ru_RU">
 <link rel="stylesheet" href="/styles.css"><script type="application/ld+json">{data}</script></head><body>
 <a class="skip-link" href="#main">К содержанию</a><header class="header wrap"><a class="brand" href="/"><span class="mark">а.</span> {AUTHOR}</a><nav aria-label="Основная навигация"><a href="/blog/">Блог</a><a class="nav-cta" href="/#contact">Бесплатный разбор ↗</a></nav></header>
-<main class="article wrap" id="main">{body}</main><footer class="wrap"><a href="/">{AUTHOR} · авитолог</a><div class="footer-extra"><a href="/blog/">Блог</a><a href="/#faq">Вопросы и ответы</a></div></footer></body></html>'''
+<main class="article wrap" id="main">{body}</main><footer class="wrap"><a href="/">{AUTHOR} · авитолог</a><div class="footer-extra"><a href="/blog/">Блог</a><a href="/#faq">Вопросы и ответы</a><a href="/privacy">Персональные данные</a><a href="/consent">Согласие</a></div></footer></body></html>'''
 
 
 items = []
@@ -46,7 +46,7 @@ schema = {'@context': 'https://schema.org', '@type': 'Blog', 'name': 'Практ
 ns = 'http://www.sitemaps.org/schemas/sitemap/0.9'
 ET.register_namespace('', ns)
 urls = ET.Element(f'{{{ns}}}urlset')
-for path, modified in [('/', None), ('/blog/', max(p['date'] for p in POSTS)), *[(f'/blog/{p["slug"]}', p['date']) for p in POSTS]]:
+for path, modified in [('/', None), ('/privacy', None), ('/consent', None), ('/blog/', max(p['date'] for p in POSTS)), *[(f'/blog/{p["slug"]}', p['date']) for p in POSTS]]:
     url = ET.SubElement(urls, f'{{{ns}}}url')
     ET.SubElement(url, f'{{{ns}}}loc').text = BASE + path
     if modified:
