@@ -15,7 +15,7 @@ POSTS = json.loads((ROOT / 'content/posts.json').read_text())
 def page(title, description, path, body, schema):
     data = json.dumps(schema, ensure_ascii=False, indent=2).replace('<', '\\u003c')
     return f'''<!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#101a2d">
 <title>{e(title)}</title><meta name="description" content="{e(description, quote=True)}"><meta name="author" content="{AUTHOR}">
 <link rel="canonical" href="{BASE}{path}"><meta property="og:url" content="{BASE}{path}"><meta property="og:title" content="{e(title, quote=True)}"><meta property="og:description" content="{e(description, quote=True)}"><meta property="og:type" content="{'article' if path != '/blog/' else 'website'}"><meta property="og:locale" content="ru_RU">
 <link rel="stylesheet" href="/styles.css"><script type="application/ld+json">{data}</script></head><body>
