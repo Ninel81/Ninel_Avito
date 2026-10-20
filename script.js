@@ -36,3 +36,47 @@ checklistItems.forEach((item) => item.addEventListener('change', () => {
   const count = [...checklistItems].filter((input) => input.checked).length;
   document.querySelector('#checklist-status').textContent = `Проверено ${count} из ${checklistItems.length} пунктов. ${count === checklistItems.length ? 'Теперь сравните просмотры и обращения. Если вопросы остались — начните с бесплатного разбора.' : 'Отметьте проверенные пункты; недостающие можно обсудить на разборе.'}`;
 }));
+
+// Motion is progressive: content remains readable without JS or with reduced motion.
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const revealElements = [...document.querySelectorAll('[data-reveal], .section-title, .cards > .card, .case-card, .steps > article')];
+let revealObserver;
+function setupReveals() {
+  revealObserver?.disconnect();
+  revealElements.forEach((element) => element.classList.remove('will-reveal', 'is-visible'));
+  if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
+  revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(({ target, isIntersecting }) => {
+      if (isIntersecting) {
+        target.classList.add('is-visible');
+        revealObserver.unobserve(target);
+      }
+    });
+  }, { threshold: 0.08 });
+  revealElements.forEach((element) => {
+    const siblings = [...element.parentElement.children];
+    const stagger = element.matches('.card, .case-card, .steps > article') ? Math.min(siblings.indexOf(element), 3) * 65 : 0;
+    element.style.setProperty('--reveal-delay', `${stagger}ms`);
+    element.classList.add('will-reveal');
+    revealObserver.observe(element);
+  });
+}
+setupReveals();
+reducedMotion.addEventListener('change', setupReveals);
+const progress = document.querySelector('.reading-progress');
+let progressScheduled = false;
+function updateProgress() {
+  const distance = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.transform = `scaleX(${distance > 0 ? Math.min(1, Math.max(0, window.scrollY / distance)) : 0})`;
+  progressScheduled = false;
+}
+function scheduleProgress() {
+  if (!progressScheduled) {
+    progressScheduled = true;
+    window.requestAnimationFrame(updateProgress);
+  }
+}
+window.addEventListener('scroll', scheduleProgress, { passive: true });
+window.addEventListener('resize', scheduleProgress);
+window.addEventListener('load', scheduleProgress);
+updateProgress();
