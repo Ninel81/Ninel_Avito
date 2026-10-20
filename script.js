@@ -1,9 +1,20 @@
 'use strict';
 const form = document.querySelector('#brief');
+const contactInput = document.querySelector('#client-contact');
+contactInput.addEventListener('input', () => {
+  contactInput.setCustomValidity(contactInput.value.trim() ? '' : 'Укажите Telegram или номер телефона.');
+});
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   const data = new FormData(form);
-  document.querySelector('#message').value = `Здравствуйте! Меня зовут ${data.get('name').trim()}.\nМой бизнес: ${data.get('business').trim()}.\nЗадача: ${data.get('task').trim()}.\nХочу обсудить продвижение на Авито.`;
+  const contact = data.get('contact').trim();
+  if (!contact) {
+    contactInput.setCustomValidity('Укажите Telegram или номер телефона.');
+    contactInput.reportValidity();
+    return;
+  }
+  document.querySelector('#copy').textContent = 'Скопировать текст';
+  document.querySelector('#message').value = `Здравствуйте! Меня зовут ${data.get('name').trim()}.\nМой бизнес: ${data.get('business').trim()}.\nСвязаться со мной: ${contact}\nЗадача: ${data.get('task').trim()}.\nХочу обсудить продвижение на Авито.`;
   document.querySelector('#result').hidden = false;
   document.querySelector('#message').focus();
 });
